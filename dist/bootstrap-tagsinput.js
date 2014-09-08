@@ -14,6 +14,7 @@
     freeInput: true,
     maxTags: undefined,
     confirmKeys: [13],
+    allowAltConfirms: true,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     }
@@ -337,7 +338,9 @@
          default:
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
-            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0 && $input.val() != '') {
+            var isAltCombo = event.altKey || event.shiftKey || event.ctrlKey;
+            var skipConfirmCheck = (isAltCombo == true && self.options.allowAltConfirms == false);
+            if (!skipConfirmCheck && self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0 && $input.val() != '') {
               self.add($input.val());
               $input.val('');
               event.preventDefault();
